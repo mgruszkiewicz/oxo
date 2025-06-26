@@ -146,10 +146,13 @@ class AgentSettings:
                         f"type {arg_instance.value} is not JSON serializable"
                     ) from e
 
-        instance.constraints.extend(self.constraints)
-        instance.mounts.extend(self.mounts)
+        if self.constraints:
+            instance.constraints.extend(self.constraints)
+        if self.mounts:
+            instance.mounts.extend(self.mounts)
         instance.restart_policy = self.restart_policy
-        instance.in_selectors.extend(self.in_selectors)
+        if self.in_selectors:
+            instance.in_selectors.extend(self.in_selectors)
         if self.mem_limit is not None:
             instance.mem_limit = self.mem_limit
 
@@ -161,7 +164,8 @@ class AgentSettings:
         instance.replicas = self.replicas
         instance.healthcheck_host = self.healthcheck_host
         instance.healthcheck_port = self.healthcheck_port
-        instance.caps.extend(self.caps)
+        if self.caps is not None:
+            instance.caps.extend(self.caps)
 
         if self.cyclic_processing_limit is not None:
             instance.cyclic_processing_limit = self.cyclic_processing_limit
